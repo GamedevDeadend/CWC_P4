@@ -5,6 +5,8 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 
 {
+    public GameObject powerIndicator1;
+    public GameObject powerIndicator2;
     public float powerUpForce = 15.0f;
     public bool hasPowerUp = false;
     public float speed = 5.0f;
@@ -23,6 +25,8 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        powerIndicator1.transform.position = transform.position + new Vector3(0, -0.5f, 0);
+        powerIndicator2.transform.position = transform.position + new Vector3(0, 1.5f, 0);
         float forceForward = Input.GetAxis("Vertical");
         playerRb.AddForce(focalPoint.transform.forward* forceForward* speed* Time.deltaTime, ForceMode.VelocityChange);
     }
@@ -31,6 +35,8 @@ public class PlayerController : MonoBehaviour
     {
         if(other.gameObject.CompareTag("PowerUp"))
         {
+            powerIndicator1.SetActive(true);
+            powerIndicator2.SetActive(true);
             hasPowerUp = true;
             Destroy(other.gameObject);
             StartCoroutine("PowerUpDelay");
@@ -40,6 +46,8 @@ public class PlayerController : MonoBehaviour
     IEnumerator PowerUpDelay()
     {
         yield return new WaitForSeconds(7);
+        powerIndicator1.SetActive(false);
+        powerIndicator2.SetActive(false);
         hasPowerUp =false;
     }
     private void OnCollisionEnter(Collision other)
